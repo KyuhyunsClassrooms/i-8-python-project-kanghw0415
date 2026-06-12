@@ -30,71 +30,57 @@
 # 3번 열: 활동 유형
 # ------------------------------------------------------------
 
-activities = [
-    ["산책하기", 30, "피곤", "운동"],
-    ["짧은 낮잠", 20, "피곤", "휴식"],
-    ["좋아하는 음악 듣기", 10, "우울", "휴식"],
-    ["문제집 3쪽 풀기", 40, "차분", "공부"],
-    ["방 정리하기", 25, "답답", "생활"],
-    ["친구에게 연락하기", 15, "우울", "소통"],
-]
-
+activities =  ["맑음", 28, 40, "반팔, 반바지"],
+    ["맑음", 23, 27, "반팔, 얇은 셔츠"],
+    ["흐림", 17, 22, "긴팔, 가디건"],
+    ["비", 10, 16, "자켓, 우산"],
+    ["눈", -10, 9, "패딩, 목도리"]
 
 # ------------------------------------------------------------
 # 2. 함수 정의
 # ------------------------------------------------------------
 
 def show_intro():
-    """프로그램 제목과 안내를 출력한다."""
     print("=" * 40)
-    print("AI 활용 자유 주제 파이썬 미니 프로젝트")
-    print("예시: 기분과 시간에 따른 활동 추천기")
+    print("날씨와 온도에 따른 옷차림 추천 프로그램")
     print("=" * 40)
+
 
 
 def get_user_input():
-    """사용자에게 기분과 남은 시간을 입력받는다."""
-    mood = input("현재 기분을 입력하세요. 예: 피곤, 우울, 차분, 답답: ")
-    minutes = int(input("사용 가능한 시간을 분 단위로 입력하세요: "))
-    return mood, minutes
+    weather = input("오늘 날씨를 입력하세요 (맑음, 흐림, 비, 눈): ")
+    temperature = int(input("현재 온도를 입력하세요(℃): "))
+    return weather, temperature
 
 
-def find_recommendations(data, mood, minutes):
-    """2차원 리스트를 반복하며 조건에 맞는 활동을 찾는다."""
-    results = []
+def find_clothes(data, weather, temperature):
+    result = []
 
     for row in data:
-        name = row[0]
-        required_minutes = row[1]
-        recommended_mood = row[2]
-        activity_type = row[3]
+        weather_type = row[0]
+        min_temp = row[1]
+        max_temp = row[2]
+        clothes = row[3]
 
-        # 조건문: 사용자의 기분과 시간이 활동 조건에 맞는지 판단한다.
-        if recommended_mood == mood and required_minutes <= minutes:
-            results.append([name, required_minutes, activity_type])
+        if weather == weather_type and min_temp <= temperature <= max_temp:
+            result.append(clothes)
 
-    return results
+    return result
 
-
-def print_result(results):
-    """추천 결과를 출력한다."""
+def print_result(result):
     print("\n[추천 결과]")
 
-    if len(results) == 0:
-        print("조건에 맞는 활동이 없습니다.")
-        print("시간을 늘리거나 다른 기분을 입력해 보세요.")
+    if len(result) == 0:
+        print("조건에 맞는 옷차림 정보가 없습니다.")
     else:
-        for item in results:
-            print(f"- {item[0]} / {item[1]}분 / 유형: {item[2]}")
-
+        for clothes in result:
+            print("추천 옷차림:", clothes)
 
 def main():
     show_intro()
-    mood, minutes = get_user_input()
-    results = find_recommendations(activities, mood, minutes)
-    print_result(results)
-
-
+    weather, temperature = get_user_input()
+    result = find_clothes(clothes_data, weather, temperature)
+    print_result(result)
 # ------------------------------------------------------------
 # 3. 프로그램 실행
 # ------------------------------------------------------------
